@@ -19,6 +19,10 @@ class MessageResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-messages';
 
+    //protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationLabel = 'Comunicazioni';
+
     public static function form(Form $form): Form
     {
         return $form

@@ -31,7 +31,8 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => '#BC7434',
             ])
             ->brandName('Patronato Gaglio')
-            ->brandLogo('images/logo.png')
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('3.5rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

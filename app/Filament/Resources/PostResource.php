@@ -19,6 +19,10 @@ class PostResource extends Resource
 
     protected static ?string $navigationIcon = 'zondicon-news-paper';
 
+    //protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationLabel = 'News';
+
     public static function form(Form $form): Form
     {
         return $form

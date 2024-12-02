@@ -19,6 +19,10 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'carbon-service-id';
 
+    //protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationLabel = 'Servizi';
+
     public static function form(Form $form): Form
     {
         return $form

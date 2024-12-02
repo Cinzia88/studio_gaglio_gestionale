@@ -1,5 +1,16 @@
 <?php
 
+use App\Http\Controllers\API\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\API\Auth\ChangePasswordUser;
+use App\Http\Controllers\API\Auth\CreateAccountUser;
+use App\Http\Controllers\API\Auth\DeleteAccountUser;
+use App\Http\Controllers\API\Auth\EditAccountUser;
+use App\Http\Controllers\API\Auth\ForgotPasswordUser;
+use App\Http\Controllers\API\Bookings\BookingsApp;
+use App\Http\Controllers\API\Messages\MessagesApp;
+use App\Http\Controllers\API\News\NewsApp;
+use App\Http\Controllers\API\Services\ServicesApp;
+use App\Http\Controllers\API\Timetable\TimetableApp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +25,46 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware('guest')->group(function () {
+    Route::post('/register', [CreateAccountUser::class, 'store']);
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('/forgot-password', [ForgotPasswordUser::class, 'forgot']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    //prendere i dati dell' utente
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    //gestione autenticazione e dati account dell' utente
+    Route::post('/delete-account', [DeleteAccountUser::class, 'destroy']);
+    Route::get('/send-verify-mail/{email}', [CreateAccountUser::class, 'sendMail']);
+    Route::post('/change-password', [ChangePasswordUser::class, 'update']);
+    Route::put('/edit-user/{id}', [EditAccountUser::class, 'update']);
+    Route::put('/save-token/{id}', [EditAccountUser::class, 'saveToken']);
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+
+    Route::get('/servizi', [ServicesApp::class, 'show']);
+
+    Route::get('/news', [NewsApp::class, 'show']);
+    Route::delete('/delete-new', [BookingsApp::class, 'destroy']);
+
+
+    Route::get('/bookings', [BookingsApp::class, 'show']);
+    Route::post('/create-booking', [BookingsApp::class, 'store']);
+    Route::delete('/delete-booking', [BookingsApp::class, 'destroy']);
+
+    Route::get('/messages', [MessagesApp::class, 'show']);
+    Route::post('/create-message', [MessagesApp::class, 'store']);
+    Route::delete('/delete-message', [MessagesApp::class, 'destroy']);
+
+    Route::get('/notification', [MessagesApp::class, 'show']);
+    Route::delete('/delete-notification', [MessagesApp::class, 'destroy']);
+
+    Route::get('/timetable', [TimetableApp::class, 'show']);
+    Route::post('/create-timetable', [TimetableApp::class, 'store']);
+    Route::delete('/delete-timetable', [TimetableApp::class, 'destroy']);
+
 });
