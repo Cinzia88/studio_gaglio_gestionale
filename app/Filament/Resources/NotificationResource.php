@@ -23,7 +23,12 @@ class NotificationResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('titolo')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('descrizione')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +36,18 @@ class NotificationResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('titolo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('descrizione')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
