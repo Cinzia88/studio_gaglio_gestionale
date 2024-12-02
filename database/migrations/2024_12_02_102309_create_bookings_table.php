@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->string('data');
+            $table->string('ora');
             $table->timestamps();
         });
     }
