@@ -17,13 +17,24 @@ class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'zondicon-calendar';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('user_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('service_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('data')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('ora')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,6 +42,16 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('user_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('service_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('data')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('ora')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

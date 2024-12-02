@@ -17,7 +17,7 @@ class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'carbon-service-id';
 
     public static function form(Form $form): Form
     {
@@ -29,9 +29,10 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('descrizione')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('immagine')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\FileUpload::make('immagine')
+                    ->directory('icon_service')
+                    ->disk('public')
+                    ->image(),
             ]);
     }
 
@@ -43,8 +44,9 @@ class ServiceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descrizione')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('immagine')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('immagine')
+                    ->width(100)
+                    ->height(100),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -59,6 +61,8 @@ class ServiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

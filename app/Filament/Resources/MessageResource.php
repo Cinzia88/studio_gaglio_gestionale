@@ -17,13 +17,18 @@ class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'tabler-messages';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('titolo')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('descrizione')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,6 +36,10 @@ class MessageResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('titolo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('descrizione')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -30,6 +30,8 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#BC7434',
             ])
+            ->brandName('Patronato Gaglio')
+            ->brandLogo('images/logo.png')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
