@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('schedule_id');
             $table->time('start');
             $table->time('end');
             $table->string('status')->default('available');
-            $table->foreignId('schedule_id');
             $table->timestamps();
         });
     }

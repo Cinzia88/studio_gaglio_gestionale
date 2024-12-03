@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->foreignId('customer_id')->cascadeOnDelete();
+            $table->unsignedTinyInteger('day_of_week')->nullable();
+            //$table->foreignId('customer_id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

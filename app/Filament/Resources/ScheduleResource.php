@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\DaysOfTheWeek;
 use App\Filament\Resources\ScheduleResource\Pages;
 use App\Filament\Resources\ScheduleResource\RelationManagers;
 use App\Models\Schedule;
+use App\Models\Slot;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,11 +25,40 @@ class ScheduleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('date')
-                    ->required(),
-                Forms\Components\TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make([
+                    /*  Forms\Components\Select::make('clinic_id')
+                         ->relationship('clinic', 'name')
+                         ->preload()
+                         ->searchable()
+                         ->live()
+                         ->afterStateUpdated(fn (Set $set) => $set('owner_id', null)),
+                     Forms\Components\Select::make('owner_id')
+                         ->native(false)
+                         ->label('Doctor')
+                         ->options(function (Get $get) use ($doctorRole): array|Collection {
+                             return Clinic::find($get('clinic_id'))
+                                 ?->users()
+                                 ->whereBelongsTo($doctorRole)
+                                 ->get()
+                                 ->pluck('name', 'id') ?? [];
+                         })
+                         ->required()
+                         ->live(), */
+                    Forms\Components\Select::make('day_of_week')
+                        ->options(DaysOfTheWeek::class)
+                        ->native(false)
+                        ->required(),
+                    Forms\Components\Repeater::make('slots')
+                        ->relationship()
+                        ->schema([
+                            Forms\Components\TimePicker::make('start')
+                                ->seconds(false)
+                                ->required(),
+                            Forms\Components\TimePicker::make('end')
+                                ->seconds(false)
+                                ->required()
+                        ])
+                ])
             ]);
     }
 
@@ -36,11 +67,14 @@ class ScheduleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('customer_id')
-                    ->numeric()
-                    ->sortable(),
+                    ->date('M d, Y')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('day_of_week')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('slots')
+                    ->badge()
+                    ->formatStateUsing(fn(Slot $state) => $state->start->format('h:i A') . ' - ' . $state->end->format('h:i A')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -49,12 +83,15 @@ class ScheduleResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(fn(Schedule $record) => $record->slots()->delete())
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
