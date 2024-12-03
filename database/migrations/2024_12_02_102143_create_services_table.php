@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('timeslot_id')->cascadeOnDelete();
-            $table->string('titolo');
+            $table->foreignId('holder_id')->nullable();
+            $table->string('nome');
             $table->string('descrizione');
             $table->string('immagine');
             $table->timestamps();

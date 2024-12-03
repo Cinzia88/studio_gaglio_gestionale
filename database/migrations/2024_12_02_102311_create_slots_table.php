@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('slots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->cascadeOnDelete();
-            $table->string('titolo');
-            $table->string('descrizione');
+            $table->time('start');
+            $table->time('end');
+            $table->string('status')->default('available');
+            $table->foreignId('schedule_id');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('slots');
     }
 };

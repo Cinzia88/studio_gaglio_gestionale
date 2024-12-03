@@ -12,149 +12,158 @@ class TimeSlotsSeeder extends Seeder
      */
     public function run(): void
     {
-        //lunedì(9-12)
+       /*  //lunedì(9-12)
         \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '9:00',
+            'giorno' => 'Lunedì',
+            'dalle' => '9:00',
+            'alle' => '9:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '9:30',
+            'giorno' => 'Lunedì',
+            'dalle' => '9:30',
+            'alle' => '10:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '10:00',
+            'giorno' => 'Lunedì',
+            'dalle' => '10:00',
+            'alle' => '10:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '10:30',
+            'giorno' => 'Lunedì',
+            'dalle' => '10:30',
+            'alle' => '11:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '11:00',
+            'giorno' => 'Lunedì',
+            'dalle' => '11:00',
+            'alle' => '11:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '11:30',
+            'giorno' => 'Lunedì',
+            'dalle' => '11:30',
+            'alle' => '12:00',
         ]);
-        \App\Models\Timeslot::create([
-            'data' => 'Lunedì',
-            'ora' => '12:00',
-        ]);
+
 
         //martedì(9-12)
         \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '9:00',
+            'giorno' => 'Martedì',
+            'dalle' => '9:00',
+            'alle' => '9:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '9:30',
+            'giorno' => 'Martedì',
+            'dalle' => '9:30',
+            'alle' => '10:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '10:00',
+            'giorno' => 'Martedì',
+            'dalle' => '10:00',
+            'alle' => '10:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '10:30',
+            'giorno' => 'Martedì',
+            'dalle' => '10:30',
+            'alle' => '11:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '11:00',
+            'giorno' => 'Martedì',
+            'dalle' => '11:00',
+            'alle' => '11:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '11:30',
+            'giorno' => 'Martedì',
+            'dalle' => '11:30',
+            'alle' => '12:00',
         ]);
-        \App\Models\Timeslot::create([
-            'data' => 'Martedì',
-            'ora' => '12:00',
-        ]);
+
 
         //venerdì(9-12)
         \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '9:00',
+            'giorno' => 'Venerdì',
+            'dalle' => '9:00',
+            'alle' => '9:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '9:30',
+            'giorno' => 'Venerdì',
+            'dalle' => '9:30',
+            'alle' => '10:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '10:00',
+            'giorno' => 'Venerdì',
+            'dalle' => '10:00',
+            'alle' => '10:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '10:30',
+            'giorno' => 'Venerdì',
+            'dalle' => '10:30',
+            'alle' => '11:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '11:00',
+            'giorno' => 'Venerdì',
+            'dalle' => '11:00',
+            'alle' => '11:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '11:30',
+            'giorno' => 'Venerdì',
+            'dalle' => '11:30',
+            'alle' => '12:00',
         ]);
-        \App\Models\Timeslot::create([
-            'data' => 'Venerdì',
-            'ora' => '12:00',
-        ]);
-
 
 
         //mercoledì(16-18:30)
         \App\Models\Timeslot::create([
-            'data' => 'Mercoledì',
-            'ora' => '16:00',
+            'giorno' => 'Mercoledì',
+            'dalle' => '16:00',
+            'alle' => '16:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Mercoledì',
-            'ora' => '16:30',
+           'giorno' => 'Mercoledì',
+            'dalle' => '16:30',
+            'alle' => '17:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Mercoledì',
-            'ora' => '17:00',
+           'giorno' => 'Mercoledì',
+            'dalle' => '17:00',
+            'alle' => '17:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Mercoledì',
-            'ora' => '17:30',
+           'giorno' => 'Mercoledì',
+            'dalle' => '17:30',
+            'alle' => '18:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Mercoledì',
-            'ora' => '18:00',
-        ]);
-        \App\Models\Timeslot::create([
-            'data' => 'Mercoledì',
-            'ora' => '18:30',
+            'giorno' => 'Mercoledì',
+            'dalle' => '18:00',
+            'alle' => '18:30',
         ]);
 
 
         //giovedì(16-18:30)
         \App\Models\Timeslot::create([
-            'data' => 'Giovedì',
-            'ora' => '16:00',
+            'giorno' => 'Giovedì',
+            'dalle' => '16:00',
+            'alle' => '16:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Giovedì',
-            'ora' => '16:30',
+           'giorno' => 'Giovedì',
+            'dalle' => '16:30',
+            'alle' => '17:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Giovedì',
-            'ora' => '17:00',
+           'giorno' => 'Giovedì',
+            'dalle' => '17:00',
+            'alle' => '17:30',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Giovedì',
-            'ora' => '17:30',
+           'giorno' => 'Giovedì',
+            'dalle' => '17:30',
+            'alle' => '18:00',
         ]);
         \App\Models\Timeslot::create([
-            'data' => 'Giovedì',
-            'ora' => '18:00',
-        ]);
-        \App\Models\Timeslot::create([
-            'data' => 'Giovedì',
-            'ora' => '18:30',
-        ]);
+            'giorno' => 'Giovedì',
+            'dalle' => '18:00',
+            'alle' => '18:30',
+        ]); */
     }
 }

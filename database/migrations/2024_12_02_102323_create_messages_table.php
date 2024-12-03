@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('customer_id')->cascadeOnDelete();
             $table->string('titolo');
             $table->string('descrizione');
             $table->timestamps();

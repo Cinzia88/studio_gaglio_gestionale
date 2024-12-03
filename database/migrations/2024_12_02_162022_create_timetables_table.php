@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('timetables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('customer_id')->cascadeOnDelete();
             $table->string('nome_documento');
             $table->string('data_scadenza');
             $table->timestamps();
