@@ -5,7 +5,7 @@
                 <div class="level-left">
                     <div class="level-item">
                         <h1 class="title">
-                           titolo
+                            {{ $data['title'] }}
                         </h1>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="buttons is-centered">
-                <a href="" class="button is-success">Clicca qui per verificare la tua e-mail</a>
+                <a href="{{ $data['url'] }}" class="button is-success">Clicca qui per verificare la tua e-mail</a>
             </div>
             <div class="level">
                 <div class="level-left">
