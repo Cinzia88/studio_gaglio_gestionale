@@ -23,19 +23,30 @@ class BookingResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('customer_id')
+                    ->relationship('customer', 'nome')
+                    ->label('Utente')
+                    ->required(),
                 Forms\Components\Select::make('service_id')
-                    ->relationship('service', 'id')
+                    ->relationship('service', 'nome')
+                    ->label('Servizio')
                     ->required(),
-                Forms\Components\TextInput::make('timeslot_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('messaggio')
-                    ->maxLength(255),
                 Forms\Components\DatePicker::make('data')
+                    ->label('Data')
                     ->required(),
+                Forms\Components\Select::make('slot_id')
+                    ->relationship('slot', 'start')
+                    ->relationship('slot', 'end')
+                    ->label('Fascia Oraria')
+                    ->required(),
+                /*   Forms\Components\Select::make('slot_id')
+                    ->relationship('slot', 'end')
+                    ->required(), */
+                Forms\Components\MarkdownEditor::make('messaggio')
+                    ->label('Messaggio')
+                    ->columnSpanFull()
+                    ->maxLength(255),
+
             ]);
     }
 

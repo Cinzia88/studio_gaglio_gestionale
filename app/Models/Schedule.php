@@ -10,14 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Schedule extends Model
 {
-    protected $casts = [
-        'day_of_week' => DaysOfTheWeek::class
-    ];
 
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
+
 
     public function slots(): HasMany
     {

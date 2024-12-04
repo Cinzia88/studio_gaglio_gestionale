@@ -31,9 +31,9 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('descrizione')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('immagine')
-                    ->required()
-                    ->maxLength(255),
+                    Forms\Components\FileUpload::make('immagine')
+                    ->image()
+                    ->imageEditor(),
             ]);
     }
 
@@ -48,8 +48,8 @@ class ServiceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descrizione')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('immagine')
-                    ->searchable(),
+                    Tables\Columns\ImageColumn::make('immagine')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
