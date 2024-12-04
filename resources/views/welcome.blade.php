@@ -5,7 +5,7 @@
                 <div class="level-left">
                     <div class="level-item">
                         <h1 class="title">
-                           titolo
+                            title
                         </h1>
                     </div>
                 </div>
@@ -22,7 +22,14 @@
             </div>
             <div class="buttons is-centered">
                 <a href="" class="button is-success">Clicca qui per verificare la tua e-mail</a>
+                <button class="button is-danger">Dark</button>
+
             </div>
+            <div>
+                <img src="{{URL::asset('/images/propic.png')}}" alt="profile Pic" height="200" width="200">
+
+            </div>
+
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
@@ -36,7 +43,7 @@
                 <div class="level-left">
                     <div class="level-item">
                         <p>
-                            Saluti,<br/>App Solidale
+                            Saluti,<br/>Studio Gaglio
                         </p>
                     </div>
                 </div>

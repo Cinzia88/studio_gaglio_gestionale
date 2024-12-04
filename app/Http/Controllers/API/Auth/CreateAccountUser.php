@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -19,8 +21,9 @@ class CreateAccountUser extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string'],
+            'nome' => ['required', 'string', 'max:255'],
+            'cognome' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', Rules\Password::defaults()],
             'confirm_password' => ['required', 'same:password'],
@@ -28,37 +31,33 @@ class CreateAccountUser extends Controller
         ]);
 
         //Handle File Upload
-        $user = User::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
+        $user = Customer::create([
+            'nome' => $request->nome,
+            'cognome' => $request->cognome,
+            'telefono' => $request->telefono,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'device_token' => $request->token ?? '',
         ]);
 
-        event(new Registered($user));
 
-        Auth::login($user);
-
-        $token = $user->createToken('api-token');
 
 
         return response()->json([
             'user' => $user,
             'message' => 'Utente registrato. Controlla la tua email per verificare',
-            'token' => $token->plainTextToken,
         ]);
     }
 
     public function sendMail($email)
     {
         if (auth()->user()) {
-            $user = User::where('email', $email)->get();
+            $user = Customer::where('email', $email)->get();
 
             if (count($user) > 0) {
                 $domain = URL::to('/');
                 $random = Str::random(64);
-                $url = $domain . 'verify-email' . $random;
+                $url = $domain . '/verify-email/' . $random;
 
                 $data['url'] = $url;
                 $data['name'] = auth()->user()->name;
@@ -69,7 +68,7 @@ class CreateAccountUser extends Controller
                 Mail::send('api/verify_email', ['data' => $data], function ($message) use ($data) {
                     $message->to($data['email'])->subject($data['title']);
                 });
-                $user = User::find($user[0]['id']);
+                $user = Customer::find($user[0]['id']);
                 $user->remember_token = $random;
                 $user->save();
 
@@ -88,6 +87,25 @@ class CreateAccountUser extends Controller
                 'state' => false,
                 'message' => 'Utente non autenticato',
             ]);
+        }
+    }
+
+    public function verificationEmail($token)
+    {
+        $user = Customer::where('remember_token', $token)->get();
+
+        if (count($user) > 0) {
+            $datetime = Carbon::now()->format('Y-m-d H:i:s');
+            $user = Customer::find($user[0]['id']);
+            $user->remember_token = '';
+            $user->is_verified = 1;
+            $user->email_verified_at = $datetime;
+            $user->save();
+
+
+            return "<h1>Email verificata con successo</h1>";
+        } else {
+            return view('api/404');
         }
     }
 }

@@ -13,6 +13,19 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        :root {
+         --bulma-primary: red;
+         --bulma-size-medium: 0.5rem;
+       }
+
+       .button {
+         background-color: red;
+       }
+       .fit-picture {
+    content:url(URL::asset('/image/logo.png'));
+}
+     </style>
 </head>
 
 <body class="">

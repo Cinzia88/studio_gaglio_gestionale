@@ -5,11 +5,16 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Get;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -21,6 +26,7 @@ class BookingResource extends Resource
 
     public static function form(Form $form): Form
     {
+
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
@@ -32,12 +38,36 @@ class BookingResource extends Resource
                     ->label('Servizio')
                     ->required(),
                 Forms\Components\DatePicker::make('data')
+                    ->native(false)
+                    ->displayFormat('M d, Y')
+                    ->closeOnDateSelection()
+                    ->live()
+                    ->disabledDates(function () {
+                        return static::getWeekendsDates();
+                    })
+
                     ->label('Data')
                     ->required(),
                 Forms\Components\Select::make('slot_id')
-                    ->relationship('slot', 'start')
-                    ->relationship('slot', 'end')
-                    ->label('Fascia Oraria')
+                    ->relationship('slot', 'dalle')
+                    ->native(false)
+                    ->label('Dalle Ore')
+                    ->visible(function ($get): ?bool {
+                        return $get('data');
+                    })
+                    ->options(function ($get) {
+                        \Carbon\Carbon::parse($get('data'))->isMonday();
+
+                        if (\Carbon\Carbon::parse($get('data'))->isMonday()) {
+
+                            $weekends[] = 'true';
+                        } else {
+                            $weekends[] = 'false';
+                        }
+
+
+                        return $weekends;
+                    })
                     ->required(),
                 /*   Forms\Components\Select::make('slot_id')
                     ->relationship('slot', 'end')
@@ -104,5 +134,22 @@ class BookingResource extends Resource
             'create' => Pages\CreateBooking::route('/create'),
             'edit' => Pages\EditBooking::route('/{record}/edit'),
         ];
+    }
+
+    protected static function getWeekendsDates(): array
+    {
+        $start = Carbon::now()->addMonth()->startOfMonth();
+        $end = $start->copy()->addMonth()->endOfMonth();
+
+        $period = CarbonPeriod::create($start, $end);
+
+        $weekends = [];
+        foreach ($period as $date) {
+            if ($date->isWeekend()) {
+                $weekends[] = $date->format('Y-m-d');
+            }
+        }
+
+        return $weekends;
     }
 }

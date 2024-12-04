@@ -7,5 +7,13 @@ use Illuminate\Http\Request;
 
 class NewsApp extends Controller
 {
-    //
+    public function show() {
+
+    }
+
+
+    public function destroy() {
+
+    }
+
 }
