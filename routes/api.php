@@ -30,10 +30,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->group(function () {
     Route::post('/register', [CreateAccountUser::class, 'store']);
     Route::post('/login', [LoginAccount::class, 'store']);
-    Route::get('forget-password', [ForgotPasswordUser::class, 'showForgetPasswordForm'])->name('forget.password.get');
-    Route::post('forget-password', [ForgotPasswordUser::class, 'submitForgetPasswordForm'])->name('forget.password.post');
-    Route::get('reset-password/{token}', [ForgotPasswordUser::class, 'showResetPasswordForm'])->name('reset.password.get');
-    Route::post('reset-password', [ForgotPasswordUser::class, 'submitResetPasswordForm'])->name('reset.password.post');
+    Route::get('/forget-password', [ForgotPasswordUser::class, 'showForgetPasswordForm'])->name('forget.password.get');
+    Route::post('/forget-password', [ForgotPasswordUser::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+    Route::get('/reset-password/{token}', [ForgotPasswordUser::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::post('/reset-password', [ForgotPasswordUser::class, 'submitResetPasswordForm'])->name('reset.password.post');
     //Route::post('/forgot-password', [ForgotPasswordUser::class, 'forgot']);
 });
 
@@ -45,11 +45,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //gestione autenticazione e dati account dell' utente
     Route::post('/delete-account', [DeleteAccountUser::class, 'destroy']);
-    Route::get('/send-verify-mail/{email}', [CreateAccountUser::class, 'sendMail']);
+    Route::get('send-verify-mail/{email}', [CreateAccountUser::class, 'sendMail']);
     Route::post('/change-password', [ChangePasswordUser::class, 'update']);
+    Route::post('/logout', [LoginAccount::class, 'destroy']);
+
     Route::put('/edit-user/{id}', [EditAccountUser::class, 'update']);
     Route::put('/save-token/{id}', [EditAccountUser::class, 'saveToken']);
-    Route::post('/logout', [LoginAccount::class, 'destroy']);
 
     Route::get('/servizi', [ServicesApp::class, 'show']);
 
