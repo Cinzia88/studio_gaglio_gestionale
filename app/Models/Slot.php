@@ -11,15 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Slot extends Model
 {
-    protected $casts = [
-        'start' => 'datetime',
-        'end' => 'datetime'
-    ];
+
 
     /**
      * @return Attribute<string, never>
      */
-    protected function formattedTime(): Attribute
+  /*   protected function formattedTime(): Attribute
     {
         return Attribute::make(
             get: fn ($value, array $attributes) =>
@@ -35,15 +32,12 @@ class Slot extends Model
                 ->where('day_of_week', $dayOfTheWeek)
                 ->whereBelongsTo($holder, 'holder');
         });
-    }
+    } */
 
     public function booking(): HasMany
     {
         return $this->hasMany(Booking::class);
     }
 
-    public function schedule(): BelongsTo
-    {
-        return $this->belongsTo(Schedule::class);
-    }
+
 }

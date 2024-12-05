@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->cascadeOnDelete();
             $table->foreignId('service_id')->cascadeOnDelete();
             $table->foreignId('slot_id')->cascadeOnDelete();
+            $table->date('data');
             $table->string('messaggio')->nullable();
             $table->string('status')->default('created');
             $table->timestamps();

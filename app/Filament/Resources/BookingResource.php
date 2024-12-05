@@ -4,9 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
+use Filament\Tables\Actions\DeleteAction;
+
 use App\Models\Booking;
+use App\Models\Slot;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
@@ -38,25 +42,42 @@ class BookingResource extends Resource
                     ->label('Servizio')
                     ->required(),
                 Forms\Components\DatePicker::make('data')
-                    ->native(false)
+                    //->native(false)
                     ->displayFormat('M d, Y')
-                    ->closeOnDateSelection()
+                    //->closeOnDateSelection()
+                    //->live()
                     ->live()
-                    ->disabledDates(function () {
+                    /*  ->disabledDates(function () {
                         return static::getWeekendsDates();
                     })
-
+                    ->afterStateUpdated(fn (Set $set) => $set('slot_id', null)) */
                     ->label('Data')
                     ->required(),
                 Forms\Components\Select::make('slot_id')
-                    ->relationship('slot', 'dalle')
-                    ->native(false)
-                    ->label('Dalle Ore')
-                    ->visible(function ($get): ?bool {
+                    ->relationship('slot', 'giorno')
+                    //->native(false)
+                    ->label('Fascia Oraria')
+                    ->options(function (Get $get) {
+                        return Slot::query()->where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
+                    })
+                    ->disabled(fn(Get $get): bool => ! filled($get('data')))
+
+
+                    /*    ->visible(function ($get): ?bool {
                         return $get('data');
                     })
-                    ->options(function ($get) {
-                        \Carbon\Carbon::parse($get('data'))->isMonday();
+                    ->getOptionLabelFromRecordUsing(function (Slot $record, Get $get) {
+                        if(\Carbon\Carbon::parse($get('data'))->isMonday()) {
+                          Slot::query()->where(['slot_id', 1])->get();
+
+                        }
+                        return "{$record->dalle} - {$record->alle}";
+                    }) */
+
+                    /*  ->options(function ($get) {
+
+                        Slot::query()->where(['giorno', \Carbon\Carbon::parse($get('data'))->isMonday()])->get();
+                       /*  \Carbon\Carbon::parse($get('data'))->isMonday();
 
                         if (\Carbon\Carbon::parse($get('data'))->isMonday()) {
 
@@ -67,7 +88,8 @@ class BookingResource extends Resource
 
 
                         return $weekends;
-                    })
+                    }) */
+
                     ->required(),
                 /*   Forms\Components\Select::make('slot_id')
                     ->relationship('slot', 'end')
@@ -84,17 +106,14 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('customer.nome')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('service.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('service.nome')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('timeslot_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('slot.ora')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('messaggio')
-                    ->searchable(),
+                /*   Tables\Columns\TextColumn::make('messaggio')
+                    ->searchable(), */
                 Tables\Columns\TextColumn::make('data')
                     ->date()
                     ->sortable(),
@@ -112,6 +131,8 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -151,5 +172,30 @@ class BookingResource extends Resource
         }
 
         return $weekends;
+    }
+
+
+    public function getAvailableTimesForDate(string $date): array
+    {
+        $date                  = Carbon::parse($date);
+        $startPeriod           = $date->copy()->hour(9);
+        $endPeriod             = $date->copy()->hour(17);
+        $times                 = CarbonPeriod::create($startPeriod, '1 hour', $endPeriod);
+        $availableReservations = [];
+
+        $reservations = Slot::whereDate('start_time', $date)
+            ->pluck('start_time')
+            ->toArray();
+
+        $availableTimes = $times->filter(function ($time) use ($reservations) {
+            return ! in_array($time, $reservations);
+        })->toArray();
+
+        foreach ($availableTimes as $time) {
+            $key                         = $time->format('H');
+            $availableReservations[$key] = $time->format('H:i');
+        }
+
+        return $availableReservations;
     }
 }

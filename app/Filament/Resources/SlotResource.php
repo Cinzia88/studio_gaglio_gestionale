@@ -26,12 +26,10 @@ class SlotResource extends Resource
                 Forms\Components\TextInput::make('giorno')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\TimePicker::make('dalle')
+                    Forms\Components\TimePicker::make('ora')
                     ->seconds(false)
                     ->required(),
-                Forms\Components\TimePicker::make('alle')
-                    ->seconds(false)
-                    ->required(),
+
                 Forms\Components\TextInput::make('status')
                     ->required()
                     ->maxLength(255)
@@ -46,12 +44,10 @@ class SlotResource extends Resource
 
                 Tables\Columns\TextColumn::make('giorno')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('dalle')
-                    ->badge()
-                    ->formatStateUsing(fn(Slot $state) => $state->start->format('h:i A') . ' - ' . $state->end->format('h:i A')),
-                    Tables\Columns\TextColumn::make('alle')
+                Tables\Columns\TextColumn::make('ora')
                     ->badge(),
                     //->formatStateUsing(fn(Slot $state) => $state->start->format('h:i A') . ' - ' . $state->end->format('h:i A')),
+
                     Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
