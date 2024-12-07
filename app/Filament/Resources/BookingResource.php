@@ -60,7 +60,7 @@ class BookingResource extends Resource
                     ->label('Fascia Oraria')
                     ->options(function (Get $get) {
                         $bookings = Booking::all();
-                        $times = Slot::all()->pluck('ora');
+
 
                         if ($bookings->isEmpty()) {
                             return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
@@ -70,18 +70,14 @@ class BookingResource extends Resource
                                 ->where('service_id', $get('service_id'))
                                 ->pluck('slot_id')
                                 ->toArray();
-                            $times =   Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)
+                            $times = Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)
                                 ->whereNot('id', $reservations)
                                 ->pluck('ora', 'id');
 
 
                             return $times;
                         }
-                        //return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
 
-                        /*  $bookings = Booking::whereDate('data', Carbon::parse($get('data')))->pluck('slot_id');
-                        return dd($bookings); */
-                        //return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
                     })
                     ->disabled(fn(Get $get): bool => ! filled($get('data')))
                     ->required(),
