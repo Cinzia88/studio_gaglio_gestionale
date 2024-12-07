@@ -55,41 +55,35 @@ class BookingResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('slot_id')
                     ->relationship('slot', 'giorno')
+
                     //->native(false)
                     ->label('Fascia Oraria')
                     ->options(function (Get $get) {
-                        return Slot::query()->where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
+                        $bookings = Booking::all();
+                        $times = Slot::all()->pluck('ora');
+
+                        if ($bookings->isEmpty()) {
+                            return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
+                        } else {
+
+                            $reservations = Booking::where('data', $get('data'))
+                                ->where('service_id', $get('service_id'))
+                                ->pluck('slot_id')
+                                ->toArray();
+                            $times =   Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)
+                                ->whereNot('id', $reservations)
+                                ->pluck('ora', 'id');
+
+
+                            return $times;
+                        }
+                        //return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
+
+                        /*  $bookings = Booking::whereDate('data', Carbon::parse($get('data')))->pluck('slot_id');
+                        return dd($bookings); */
+                        //return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id');
                     })
                     ->disabled(fn(Get $get): bool => ! filled($get('data')))
-
-
-                    /*    ->visible(function ($get): ?bool {
-                        return $get('data');
-                    })
-                    ->getOptionLabelFromRecordUsing(function (Slot $record, Get $get) {
-                        if(\Carbon\Carbon::parse($get('data'))->isMonday()) {
-                          Slot::query()->where(['slot_id', 1])->get();
-
-                        }
-                        return "{$record->dalle} - {$record->alle}";
-                    }) */
-
-                    /*  ->options(function ($get) {
-
-                        Slot::query()->where(['giorno', \Carbon\Carbon::parse($get('data'))->isMonday()])->get();
-                       /*  \Carbon\Carbon::parse($get('data'))->isMonday();
-
-                        if (\Carbon\Carbon::parse($get('data'))->isMonday()) {
-
-                            $weekends[] = 'true';
-                        } else {
-                            $weekends[] = 'false';
-                        }
-
-
-                        return $weekends;
-                    }) */
-
                     ->required(),
                 /*   Forms\Components\Select::make('slot_id')
                     ->relationship('slot', 'end')

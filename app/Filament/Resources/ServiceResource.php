@@ -32,6 +32,7 @@ class ServiceResource extends Resource
                     ->required()
                     ->maxLength(255),
                     Forms\Components\FileUpload::make('immagine')
+                    ->required()
                     ->image()
                     ->imageEditor(),
             ]);
