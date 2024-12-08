@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
             $table->string('giorno');
-            $table->time('ora');
+            $table->time('ora')->format('H:i');
             $table->string('status')->default('available');
             $table->timestamps();
         });

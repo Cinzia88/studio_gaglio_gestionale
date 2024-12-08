@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SlotResource\Pages;
 use App\Filament\Resources\SlotResource\RelationManagers;
 use App\Models\Slot;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -96,4 +97,9 @@ class SlotResource extends Resource
             'edit' => Pages\EditSlot::route('/{record}/edit'),
         ];
     }
+
+    public function getOraAttribute($date)
+{
+    return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('hh:mm');
+}
 }

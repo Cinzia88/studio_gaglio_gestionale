@@ -10,10 +10,18 @@ class EditBooking extends EditRecord
 {
     protected static string $resource = BookingResource::class;
 
+    protected static ?string $title = 'Modifica Prenotazione';
+
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl ?? $this->getResource()::getUrl('index');
     }
 }

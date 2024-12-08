@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +15,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         // create demo users
-      \App\Models\User::factory()->create([
+     User::factory()->create([
         'name' => 'Studio Gaglio',
         'email' => 'studio_gaglio@gmail.com',
         'password' => 'password',

@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use Filament\Tables\Actions\DeleteAction;
-
+use App\Models\Customer;
 use App\Models\Booking;
 use App\Models\Slot;
 use Carbon\Carbon;
@@ -39,7 +39,9 @@ class BookingResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'nome')
+                    ->relationship('customer', 'nome',)
+                    ->getOptionLabelFromRecordUsing(fn (Customer $record) => "{$record->nome} {$record->cognome}")
+
                     ->label('Utente')
                     ->required(),
                 Forms\Components\Select::make('service_id')
@@ -82,7 +84,6 @@ class BookingResource extends Resource
 
                             return $times;
                         }
-
                     })
                     ->disabled(fn(Get $get): bool => ! filled($get('data')))
                     ->required(),
@@ -102,14 +103,18 @@ class BookingResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('customer.nome')
+                    ->label('Utente')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('service.nome')
+                    ->label('Servizio')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slot.ora')
+                    ->label('Ora')
                     ->sortable(),
                 /*   Tables\Columns\TextColumn::make('messaggio')
                     ->searchable(), */
                 Tables\Columns\TextColumn::make('data')
+                    ->label('Data')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -125,8 +130,8 @@ class BookingResource extends Resource
                 //
             ])
             ->actions([
-                   Tables\Actions\EditAction::make(),
-                   Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
 
             ])
             ->bulkActions([
@@ -169,28 +174,8 @@ class BookingResource extends Resource
         return $weekends;
     }
 
-
-    public function getAvailableTimesForDate(string $date): array
+    public static function getBreadcrumb(): string
     {
-        $date                  = Carbon::parse($date);
-        $startPeriod           = $date->copy()->hour(9);
-        $endPeriod             = $date->copy()->hour(17);
-        $times                 = CarbonPeriod::create($startPeriod, '1 hour', $endPeriod);
-        $availableReservations = [];
-
-        $reservations = Slot::whereDate('start_time', $date)
-            ->pluck('start_time')
-            ->toArray();
-
-        $availableTimes = $times->filter(function ($time) use ($reservations) {
-            return ! in_array($time, $reservations);
-        })->toArray();
-
-        foreach ($availableTimes as $time) {
-            $key                         = $time->format('H');
-            $availableReservations[$key] = $time->format('H:i');
-        }
-
-        return $availableReservations;
+        return 'Prenotazioni';
     }
 }

@@ -13,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 class Customer extends Authenticatable
 {
 
-    use HasApiTokens,  Notifiable;
+    use HasApiTokens,  Notifiable, HasFactory;
 
     public function bookings(): HasMany
     {

@@ -58,8 +58,9 @@ class ServiceResource extends Resource
                     ->sortable(), */
                 Tables\Columns\TextColumn::make('nome')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('descrizione')
-                    ->searchable(),
+              /*   Tables\Columns\TextColumn::make('descrizione')
+
+                    ->searchable(), */
                 Tables\Columns\ImageColumn::make('immagine')
                     ->circular(),
                 Tables\Columns\TextColumn::make('created_at')

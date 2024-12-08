@@ -10,10 +10,13 @@ class ListCustomers extends ListRecords
 {
     protected static string $resource = CustomerResource::class;
 
-    protected function getHeaderActions(): array
+    protected static ?string $title = 'Utenti';
+
+
+    /* protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
         ];
-    }
+    } */
 }
