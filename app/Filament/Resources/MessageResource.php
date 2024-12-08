@@ -19,7 +19,7 @@ class MessageResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-messages';
 
-    //protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $navigationLabel = 'Comunicazioni';
 
@@ -58,7 +58,7 @@ class MessageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\DeleteAction::make(),            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

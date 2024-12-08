@@ -17,7 +17,11 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $navigationLabel = 'Utenti';
+
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {
@@ -25,23 +29,39 @@ class CustomerResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nome')
                     ->required()
+                    ->readOnly(true)
+
                     ->maxLength(255),
                 Forms\Components\TextInput::make('cognome')
                     ->required()
+                    ->readOnly(true)
+
                     ->maxLength(255),
                 Forms\Components\TextInput::make('telefono')
                     ->tel()
                     ->required()
+                    ->readOnly(true)
+
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->readOnly(true)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
+
+                //Forms\Components\DateTimePicker::make('email_verified_at'),
+                /* Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255), */
+                    Forms\Components\Toggle::make('tesserato')
+                    ->live()
+                        ->label('Tesserato'),
+                        Forms\Components\TextInput::make('n_tessera')
+                        ->visible(function (Forms\Get $get) {
+                            return $get('tesserato') == true;
+                        })
+                        ->label('N° Tessera'),
             ]);
     }
 
@@ -57,7 +77,9 @@ class CustomerResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
+                    Tables\Columns\IconColumn::make('tesserato')
+                    ->boolean(),
+              /*   Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -67,13 +89,15 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true), */
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

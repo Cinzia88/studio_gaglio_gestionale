@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
     {
         // create demo users
       \App\Models\User::factory()->create([
-        'name' => 'Admin',
-        'email' => 'patronatogaglio@gmail.com',
+        'name' => 'Studio Gaglio',
+        'email' => 'studio_gaglio@gmail.com',
         'password' => 'password',
     ]);
 

@@ -19,7 +19,7 @@ class NotificationResource extends Resource
 
     protected static ?string $navigationIcon = 'monoicon-notification';
 
-    //protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 6;
 
     protected static ?string $navigationLabel = 'Notifiche';
 
@@ -58,7 +58,7 @@ class NotificationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\DeleteAction::make(),            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

@@ -17,21 +17,32 @@ class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'carbon-service-id';
+
+    protected static ?string $navigationLabel = 'Servizi';
+
+    protected static ?int $navigationSort = 2;
+
+
+
+
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('holder_id')
-                    ->numeric(),
+                /*  Forms\Components\TextInput::make('holder_id')
+                    ->numeric(), */
                 Forms\Components\TextInput::make('nome')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('descrizione')
+                Forms\Components\TextArea::make('descrizione')
+                    ->columnSpanFull()
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\FileUpload::make('immagine')
+                Forms\Components\FileUpload::make('immagine')
                     ->required()
                     ->image()
                     ->imageEditor(),
@@ -42,14 +53,14 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('holder_id')
+                /*  Tables\Columns\TextColumn::make('holder_id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable(), */
                 Tables\Columns\TextColumn::make('nome')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descrizione')
                     ->searchable(),
-                    Tables\Columns\ImageColumn::make('immagine')
+                Tables\Columns\ImageColumn::make('immagine')
                     ->circular(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -64,7 +75,10 @@ class ServiceResource extends Resource
                 //
             ])
             ->actions([
+                //Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -87,5 +101,10 @@ class ServiceResource extends Resource
             'create' => Pages\CreateService::route('/create'),
             'edit' => Pages\EditService::route('/{record}/edit'),
         ];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Servizi';
     }
 }

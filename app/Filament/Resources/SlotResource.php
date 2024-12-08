@@ -17,7 +17,13 @@ class SlotResource extends Resource
 {
     protected static ?string $model = Slot::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'entypo-time-slot';
+
+    protected static ?string $navigationLabel = 'Slot';
+
+    protected static ?int $navigationSort = 1;
+
+
 
     public static function form(Form $form): Form
     {
@@ -26,7 +32,7 @@ class SlotResource extends Resource
                 Forms\Components\TextInput::make('giorno')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\TimePicker::make('ora')
+                Forms\Components\TimePicker::make('ora')
                     ->seconds(false)
                     ->required(),
 
@@ -46,9 +52,9 @@ class SlotResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ora')
                     ->badge(),
-                    //->formatStateUsing(fn(Slot $state) => $state->start->format('h:i A') . ' - ' . $state->end->format('h:i A')),
+                //->formatStateUsing(fn(Slot $state) => $state->start->format('h:i A') . ' - ' . $state->end->format('h:i A')),
 
-                    Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -63,7 +69,10 @@ class SlotResource extends Resource
                 //
             ])
             ->actions([
+                //Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
