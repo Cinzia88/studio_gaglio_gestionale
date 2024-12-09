@@ -22,6 +22,7 @@ class CreateAccountUser extends Controller
     {
         $request->validate([
             'nome' => ['required', 'string', 'max:255'],
+            'cognome' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', Rules\Password::defaults()],
@@ -32,6 +33,7 @@ class CreateAccountUser extends Controller
         //Handle File Upload
         $user = Customer::create([
             'nome' => $request->nome,
+            'cognome' => $request->cognome,
             'telefono' => $request->telefono,
             'email' => $request->email,
             'password' => Hash::make($request->password),
