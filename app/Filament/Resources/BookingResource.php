@@ -49,7 +49,7 @@ class BookingResource extends Resource
                        $slot_booking = Booking::where('service_id', 4)
                             ->get();
 $array=[];
-                            foreach($slot_booking as $key => $slot) {
+                            foreach($slot_booking as $slot) {
 array_push($array, $slot);
                             }
                             $slot = Arr::pluck($slot_booking, 'id');
