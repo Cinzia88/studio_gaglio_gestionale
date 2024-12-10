@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Arr;
 
 class BookingResource extends Resource
 {
@@ -43,9 +44,20 @@ class BookingResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('slot_id')
                     ->relationship('slot', 'giorno')
-                    //->native(false)
                     ->label('Fascia Oraria')
-                    ->options(fn(Get $get) => Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)->pluck('ora', 'id'))
+                    ->options(function (Get $get) {
+                       $slot_booking = Booking::where('service_id', 4)
+                            ->get();
+$array=[];
+                            foreach($slot_booking as $key => $slot) {
+array_push($array, $slot);
+                            }
+                            $slot = Arr::pluck($slot_booking, 'id');
+dd($array);
+                         return Slot::where('giorno', Carbon::parse($get('data'))->locale('it')->dayName)
+                            ->whereNotIn('id', $slot)
+                            ->pluck('ora', 'id');
+                    })
                     ->disabled(fn(Get $get): bool => ! filled($get('data')))
                     ->required(),
                 Forms\Components\TextArea::make('messaggio')
