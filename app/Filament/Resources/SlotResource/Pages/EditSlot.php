@@ -10,6 +10,9 @@ class EditSlot extends EditRecord
 {
     protected static string $resource = SlotResource::class;
 
+    protected static ?string $title = 'Modifica Slot';
+
+
     protected function getHeaderActions(): array
     {
         return [

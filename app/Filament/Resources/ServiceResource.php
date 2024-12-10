@@ -17,7 +17,11 @@ class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'carbon-service-id';
+
+    protected static ?string $navigationLabel = 'Servizi';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -79,5 +83,10 @@ class ServiceResource extends Resource
             'edit' => Pages\EditService::route('/{record}/edit'),
 
         ];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Servizi';
     }
 }
