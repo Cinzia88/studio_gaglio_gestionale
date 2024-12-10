@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('service_id');
             $table->string('giorno');
             $table->time('ora')->format('H:i');
-            $table->string('status')->default('available');
             $table->timestamps();
         });
     }

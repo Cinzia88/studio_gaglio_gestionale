@@ -16,7 +16,7 @@ class Slot extends Model
     /**
      * @return Attribute<string, never>
      */
-  /*   protected function formattedTime(): Attribute
+    /*   protected function formattedTime(): Attribute
     {
         return Attribute::make(
             get: fn ($value, array $attributes) =>
@@ -39,5 +39,8 @@ class Slot extends Model
         return $this->hasMany(Booking::class);
     }
 
-
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
+    }
 }

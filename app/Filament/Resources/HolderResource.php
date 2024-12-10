@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ServiceResource\Pages;
-use App\Filament\Resources\ServiceResource\RelationManagers;
-use App\Models\Service;
+use App\Filament\Resources\HolderResource\Pages;
+use App\Filament\Resources\HolderResource\RelationManagers;
+use App\Models\Holder;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ServiceResource extends Resource
+class HolderResource extends Resource
 {
-    protected static ?string $model = Service::class;
+    protected static ?string $model = Holder::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,12 +23,19 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('holder_id')
-                ,
                 Forms\Components\TextInput::make('nome')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('immagine'),
+                Forms\Components\TextInput::make('cognome')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('telefono')
+                    ->tel()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -36,10 +43,13 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-
                 Tables\Columns\TextColumn::make('nome')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('immagine')
+                Tables\Columns\TextColumn::make('cognome')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('telefono')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -55,7 +65,6 @@ class ServiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -74,10 +83,9 @@ class ServiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListServices::route('/'),
-            'create' => Pages\CreateService::route('/create'),
-            'edit' => Pages\EditService::route('/{record}/edit'),
-
+            'index' => Pages\ListHolders::route('/'),
+            'create' => Pages\CreateHolder::route('/create'),
+            'edit' => Pages\EditHolder::route('/{record}/edit'),
         ];
     }
 }

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->cascadeOnDelete();
+            $table->foreignId('customer_id')->cascadeOnDelete()->nullable();
             $table->foreignId('service_id')->cascadeOnDelete();
             $table->foreignId('slot_id')->cascadeOnDelete();
             $table->date('data');
             $table->string('messaggio')->nullable();
-            $table->string('status')->default('created');
+            $table->boolean('available')->default(true);
             $table->timestamps();
         });
     }

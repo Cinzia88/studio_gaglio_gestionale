@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SlotResource\Pages;
 use App\Filament\Resources\SlotResource\RelationManagers;
 use App\Models\Slot;
-use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,29 +17,26 @@ class SlotResource extends Resource
 {
     protected static ?string $model = Slot::class;
 
-    protected static ?string $navigationIcon = 'entypo-time-slot';
-
-    protected static ?string $navigationLabel = 'Slot';
-
-    protected static ?int $navigationSort = 1;
-
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('giorno')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TimePicker::make('ora')
-                    ->seconds(false)
+                Forms\Components\Select::make('service_id')
+                    ->relationship('service', 'nome')
                     ->required(),
-
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('available'),
+                Forms\Components\Select::make('giorno')
+                ->options([
+                    'lun' => 'Lunedì',
+                    'mar' => 'Martedì',
+                    'mer' => 'Mercoledì',
+                    'gio' => 'Giovedì',
+                    'ven' => 'Venerdì',
+                ])
+                    ->required(),
+                Forms\Components\TextInput::make('ora')
+                    ->required(),
             ]);
     }
 
@@ -48,13 +44,12 @@ class SlotResource extends Resource
     {
         return $table
             ->columns([
-
+                Tables\Columns\TextColumn::make('service.nome')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('giorno')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('ora')
-                    ->badge(),
-                //->formatStateUsing(fn(Slot $state) => $state->start->format('h:i A') . ' - ' . $state->end->format('h:i A')),
-
+                Tables\Columns\TextColumn::make('ora'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -63,17 +58,12 @@ class SlotResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
-
             ])
             ->filters([
                 //
             ])
             ->actions([
-                //Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -97,9 +87,4 @@ class SlotResource extends Resource
             'edit' => Pages\EditSlot::route('/{record}/edit'),
         ];
     }
-
-    public function getOraAttribute($date)
-{
-    return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('hh:mm');
-}
 }

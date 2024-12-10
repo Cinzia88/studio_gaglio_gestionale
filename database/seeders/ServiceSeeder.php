@@ -14,18 +14,18 @@ class ServiceSeeder extends Seeder
     public function run(): void
     {
         Service::create([
+            'holder_id' => null,
             'nome' => 'Agenzia Assicurazioni',
-            'descrizione' => 'agenzia',
         ]);
 
         Service::create([
+            'holder_id' => null,
             'nome' => 'Corsi di formazione',
-            'descrizione' => 'corsi',
         ]);
 
         Service::create([
+            'holder_id' => null,
             'nome' => 'Patronato',
-            'descrizione' => 'caf',
         ]);
     }
 }
